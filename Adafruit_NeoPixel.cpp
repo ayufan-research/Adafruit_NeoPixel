@@ -168,7 +168,7 @@ void Adafruit_NeoPixel::updateType(neoPixelType t) {
 #ifdef NEO_KHZ400
   is800KHz = (t & NEO_KHZ400) ? 0 : 1;      // 400 KHz flag is 1<<8
 #endif
-  latchTime = (t & NEO_SK6812) ? 80 : 300;
+  latchTime = (t & NEO_SK6812) ? 90 : 300;
 
   // If bytes-per-pixel has changed (and pixel data was previously
   // allocated), re-allocate to new size. Will clear any data.
