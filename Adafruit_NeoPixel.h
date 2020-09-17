@@ -126,6 +126,8 @@
 #define NEO_KHZ400 0x0100 ///< 400 KHz data transmission
 #endif
 
+#define NEO_SK6812 0x1000
+
 // If 400 KHz support is enabled, the third parameter to the constructor
 // requires a 16-bit value (in order to select 400 vs 800 KHz speed).
 // If only 800 KHz is enabled (as is default on ATtiny), an 8-bit value
@@ -231,7 +233,7 @@ class Adafruit_NeoPixel {
     @return  1 or true if show() will start sending immediately, 0 or false
              if show() would block (meaning some idle time is available).
   */
-  boolean           canShow(void) const { return (micros()-endTime) >= 300L; }
+  boolean           canShow(void) const { return (micros()-endTime) >= latchTime; }
   /*!
     @brief   Get a pointer directly to the NeoPixel data buffer in RAM.
              Pixel data is stored in a device-native format (a la the NEO_*
@@ -337,6 +339,7 @@ class Adafruit_NeoPixel {
 #ifdef NEO_KHZ400  // If 400 KHz NeoPixel support enabled...
   boolean           is800KHz;   ///< true if 800 KHz pixels
 #endif
+  boolean           latchTime;  /// 300us
   boolean           begun;      ///< true if begin() previously called
   uint16_t          numLEDs;    ///< Number of RGB LEDs in strip
   uint16_t          numBytes;   ///< Size of 'pixels' buffer below

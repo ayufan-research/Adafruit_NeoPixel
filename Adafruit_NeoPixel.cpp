@@ -91,7 +91,7 @@ Adafruit_NeoPixel::Adafruit_NeoPixel() :
   is800KHz(true),
 #endif
   begun(false), numLEDs(0), numBytes(0), pin(-1), brightness(0), pixels(NULL),
-  rOffset(1), gOffset(0), bOffset(2), wOffset(1), endTime(0) {
+  rOffset(1), gOffset(0), bOffset(2), wOffset(1), endTime(0), latchTime(300) {
 }
 
 /*!
@@ -161,8 +161,9 @@ void Adafruit_NeoPixel::updateType(neoPixelType t) {
   gOffset = (t >> 2) & 0b11;
   bOffset =  t       & 0b11;
 #ifdef NEO_KHZ400
-  is800KHz = (t < 256);      // 400 KHz flag is 1<<8
+  is800KHz = (t & NEO_KHZ400) ? 0 : 1;      // 400 KHz flag is 1<<8
 #endif
+  latchTime = (t & NEO_SK6812) ? 80 : 300;
 
   // If bytes-per-pixel has changed (and pixel data was previously
   // allocated), re-allocate to new size. Will clear any data.
